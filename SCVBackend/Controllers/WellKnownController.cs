@@ -5,16 +5,10 @@ namespace SCVBackend.Controllers
 {
     public class WellKnownController : Controller
     {
-        [Route("/.well-known/acme-challenge/1oJfhdhjvnT8wwbyJ6b8-S_7qjEcfUHHitqPeTEHlQY")]
-        public IActionResult Domain()
+        [Route("/.well-known/acme-challenge/U_r0VPKasEwRQN_GQ2p9DTIIW89pJexz-9O5dGEOJq4")]
+        public IActionResult Index()
         {
-            return File(Encoding.UTF8.GetBytes("1oJfhdhjvnT8wwbyJ6b8-S_7qjEcfUHHitqPeTEHlQY.5L4sA11CpZAIg_CZuZtDvB7wjHxTBGV5plDRWt_aurs"), "text/plain");
-        }
-
-        [Route("/.well-known/acme-challenge/c_2dZYJVQ8ush2rUdynZL57zUGTrsUgisFenTu1C390")]
-        public IActionResult DomainWithW3()
-        {
-            return File(Encoding.UTF8.GetBytes("c_2dZYJVQ8ush2rUdynZL57zUGTrsUgisFenTu1C390.5L4sA11CpZAIg_CZuZtDvB7wjHxTBGV5plDRWt_aurs"), "text/plain");
+            return File(Encoding.UTF8.GetBytes("U_r0VPKasEwRQN_GQ2p9DTIIW89pJexz-9O5dGEOJq4.fCta6qCK-oFf6d_ExTBGy0868GJ2a_r_H8IzWF4UNWk"), "text/plain");
         }
     }
 }
