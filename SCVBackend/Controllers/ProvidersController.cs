@@ -28,7 +28,8 @@ namespace SCVBackend.Controllers
                     p => new ProviderListModel
                     {
                         Id = p.Id,
-                        Name = p.Name
+                        Name = p.Name,
+                        BaseApiUrl = p.BaseApiUrl
                     }
                 )
                 .ToListAsync();

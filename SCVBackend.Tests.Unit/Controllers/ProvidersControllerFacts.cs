@@ -79,6 +79,7 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 Equal(provider.Id, item.Id);
                 Equal(provider.Name, item.Name);
+                Equal(provider.BaseApiUrl, item.BaseApiUrl);
             }
 
             [Fact]
@@ -101,6 +102,7 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 Equal(provider2.Id, item.Id);
                 Equal(provider2.Name, item.Name);
+                Equal(provider2.BaseApiUrl, item.BaseApiUrl);
             }
 
             [Fact]
@@ -123,6 +125,7 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 Equal(provider1.Id, item.Id);
                 Equal(provider1.Name, item.Name);
+                Equal(provider1.BaseApiUrl, item.BaseApiUrl);
             }
 
             [Fact]
@@ -145,6 +148,7 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 Equal(provider2.Id, item.Id);
                 Equal(provider2.Name, item.Name);
+                Equal(provider2.BaseApiUrl, item.BaseApiUrl);
             }
         }
     }
