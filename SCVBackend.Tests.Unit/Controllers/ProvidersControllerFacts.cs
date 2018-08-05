@@ -51,7 +51,7 @@ namespace SCVBackend.Tests.Unit.Controllers
             {
                 UsingContext(c =>
                 {
-                    c.Add(new Provider(Guid.NewGuid(), "Fornecedor 1", "https://fornecedor1.com/api"));
+                    c.Add(new Provider(Guid.NewGuid(), "Provider 1", "https://provider1.com/api"));
                 });
 
                 var result = await providersController.Get() as OkObjectResult;
@@ -64,7 +64,7 @@ namespace SCVBackend.Tests.Unit.Controllers
             [Fact]
             public async void ReturnsItemsHydrated()
             {
-                var provider = new Provider(Guid.NewGuid(), "Fornecedor 1", "https://fornecedor1.com/api");
+                var provider = new Provider(Guid.NewGuid(), "Provider 1", "https://provider1.com/api");
 
                 UsingContext(c =>
                 {
@@ -79,6 +79,72 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 Equal(provider.Id, item.Id);
                 Equal(provider.Name, item.Name);
+            }
+
+            [Fact]
+            public async void ReturnsItemsFilteredByName()
+            {
+                var provider1 = new Provider(Guid.NewGuid(), "Provider 1", "https://provider1.com/api");
+                var provider2 = new Provider(Guid.NewGuid(), "Provider 2", "https://provider2.com/api");
+
+                UsingContext(c =>
+                {
+                    c.Add(provider1);
+                    c.Add(provider2);
+                });
+
+                var result = await providersController.Get("Provider 2") as OkObjectResult;
+
+                var list = result.Value as IEnumerable<ProviderListModel>;
+
+                var item = list.Single();
+
+                Equal(provider2.Id, item.Id);
+                Equal(provider2.Name, item.Name);
+            }
+
+            [Fact]
+            public async void ReturnsItemsFilteredByApiUrl()
+            {
+                var provider1 = new Provider(Guid.NewGuid(), "Provider 1", "https://provider1.com/api");
+                var provider2 = new Provider(Guid.NewGuid(), "Provider 2", "https://provider2.com/api");
+
+                UsingContext(c =>
+                {
+                    c.Add(provider1);
+                    c.Add(provider2);
+                });
+
+                var result = await providersController.Get("provider1") as OkObjectResult;
+
+                var list = result.Value as IEnumerable<ProviderListModel>;
+
+                var item = list.Single();
+
+                Equal(provider1.Id, item.Id);
+                Equal(provider1.Name, item.Name);
+            }
+
+            [Fact]
+            public async void ReturnsItemsPaged()
+            {
+                var provider1 = new Provider(Guid.NewGuid(), "Provider 1", "https://provider1.com/api");
+                var provider2 = new Provider(Guid.NewGuid(), "Provider 2", "https://provider2.com/api");
+
+                UsingContext(c =>
+                {
+                    c.Add(provider1);
+                    c.Add(provider2);
+                });
+
+                var result = await providersController.Get(page: 2, itemsPerPage: 1) as OkObjectResult;
+
+                var list = result.Value as IEnumerable<ProviderListModel>;
+
+                var item = list.Single();
+
+                Equal(provider2.Id, item.Id);
+                Equal(provider2.Name, item.Name);
             }
         }
     }

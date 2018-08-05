@@ -17,9 +17,12 @@ namespace SCVBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(string filter = null, int page = 1, int itemsPerPage = 10)
         {
             var providers = await scvContext.Providers
+                .Where(p => filter != null ? p.Name.Contains(filter) || p.BaseApiUrl.Contains(filter) : true)
+                .Skip((page - 1) * itemsPerPage)
+                .Take(itemsPerPage)
                 .Select
                 (
                     p => new ProviderListModel
