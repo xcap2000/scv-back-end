@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SCVBackend.Controllers
 {
+    [Route("api/[controller]")]
     public class ProvidersController : Controller
     {
         private readonly ScvContext scvContext;
@@ -19,8 +20,14 @@ namespace SCVBackend.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(string filter = null, int page = 1, int itemsPerPage = 10)
         {
-            var providers = await scvContext.Providers
-                .Where(p => filter != null ? p.Name.Contains(filter) || p.BaseApiUrl.Contains(filter) : true)
+            var providersQuery = scvContext.Providers
+                .Where(p => filter != null ? p.Name.Contains(filter) || p.BaseApiUrl.Contains(filter) : true);
+
+            var providersCount = await providersQuery
+                .CountAsync();
+
+            var providers = await providersQuery
+                .OrderBy(p => p.Name)
                 .Skip((page - 1) * itemsPerPage)
                 .Take(itemsPerPage)
                 .Select
@@ -34,7 +41,7 @@ namespace SCVBackend.Controllers
                 )
                 .ToListAsync();
 
-            return Ok(providers);
+            return Ok(new PagedResult<ProviderListModel>(providersCount, providers));
         }
     }
 }
