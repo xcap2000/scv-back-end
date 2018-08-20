@@ -1,3 +1,4 @@
 .vs
 bin
 obj
+/SCVBackend.Tests.Unit/SCVBackend.Tests.Unit.csproj.user
