@@ -13,16 +13,27 @@ namespace SCVBackend
     {
         private readonly IConfiguration configuration;
 
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment environment;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             this.configuration = configuration;
+            this.environment = environment;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<ScvContext>(
-                options => options.UseNpgsql(configuration.GetConnectionString("Default")));
+            if (environment.IsDevelopment())
+            {
+                services.AddDbContextPool<ScvContext>(
+                    options => options.UseNpgsql(configuration.GetConnectionString("Default")));
+            }
+            else
+            {
+                services.AddDbContextPool<ScvContext>(
+                    options => options.UseNpgsql(configuration.GetConnectionString("Default").Replace("SECRET_PASSWORD", configuration["SECRET_PASSWORD"])));
+            }
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCors();
