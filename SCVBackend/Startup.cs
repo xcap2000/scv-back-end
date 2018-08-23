@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CacheManager.Core;
+using EFSecondLevelCache.Core;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SCVBackend.Domain;
+using SCVBackend.Infrastructure;
 using System;
+using System.IO.Compression;
 
 namespace SCVBackend
 {
@@ -37,11 +42,26 @@ namespace SCVBackend
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCors();
+            services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
+            services.AddResponseCompression(options => options.EnableForHttps = true);
+
+            services.AddEFSecondLevelCache();
+
+            // Add an in-memory cache service provider
+            services.AddSingleton(typeof(ICacheManager<>), typeof(BaseCacheManager<>));
+            services.AddSingleton(typeof(ICacheManagerConfiguration),
+                new CacheManager.Core.ConfigurationBuilder()
+                        .WithJsonSerializer()
+                        .WithMicrosoftMemoryCacheHandle()
+                        .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromMinutes(10))
+                        .Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseETagger();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -59,9 +79,11 @@ namespace SCVBackend
                     .AllowAnyMethod()
             );
 
+            app.UseEFSecondLevelCache();
             app.MigrateDatabase();
             app.SeedDatabase();
 
+            app.UseResponseCompression();
             app.UseMvc();
         }
     }
