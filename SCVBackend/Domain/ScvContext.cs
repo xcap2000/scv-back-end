@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SCVBackend.Domain.Configurations;
+using SCVBackend.Domain.Entities;
 
 namespace SCVBackend.Domain
 {

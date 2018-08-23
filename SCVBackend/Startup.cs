@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SCVBackend.Domain;
 using System;
-using System.Diagnostics;
 
 namespace SCVBackend
 {
@@ -32,9 +31,6 @@ namespace SCVBackend
             }
             else
             {
-                Debug.WriteLine("DEBUG--:" + configuration.GetConnectionString("Default").Replace("SECRET_PASSWORD", configuration["SECRET_PASSWORD"]));
-                Console.WriteLine("CONSOLE--:" + configuration.GetConnectionString("Default").Replace("SECRET_PASSWORD", configuration["SECRET_PASSWORD"]));
-
                 services.AddDbContextPool<ScvContext>(
                     options => options.UseNpgsql(configuration.GetConnectionString("Default").Replace("SECRET_PASSWORD", configuration["SECRET_PASSWORD"])));
             }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SCVBackend.Domain.Entities;
+using System;
 using System.Linq;
 
 namespace SCVBackend.Domain.Seed
