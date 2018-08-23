@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SCVBackend.Controllers;
 using SCVBackend.Domain;
+using SCVBackend.Domain.Entities;
 using SCVBackend.Model;
 using SCVBackend.Tests.Unit.TestInfrastructure;
 using System;

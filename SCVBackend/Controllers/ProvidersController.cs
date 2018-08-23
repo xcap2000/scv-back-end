@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EFSecondLevelCache.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SCVBackend.Domain;
 using SCVBackend.Model;
@@ -39,6 +40,7 @@ namespace SCVBackend.Controllers
                         BaseApiUrl = p.BaseApiUrl
                     }
                 )
+                .Cacheable()
                 .ToListAsync();
 
             return Ok(new PagedResult<ProviderListModel>(providersCount, providers));
