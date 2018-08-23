@@ -1,4 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EFSecondLevelCache.Core;
+using EFSecondLevelCache.Core.Contracts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using SCVBackend.Domain.Configurations;
+using SCVBackend.Domain.Entities;
 
 namespace SCVBackend.Domain
 {
@@ -15,5 +20,16 @@ namespace SCVBackend.Domain
         }
 
         public DbSet<Provider> Providers { get; set; }
+
+        public override int SaveChanges()
+        {
+            ChangeTracker.DetectChanges();
+            var changedEntityNames = this.GetChangedEntityNames();
+
+            var result = base.SaveChanges();
+            this.GetService<IEFCacheServiceProvider>().InvalidateCacheDependencies(changedEntityNames);
+
+            return result;
+        }
     }
 }

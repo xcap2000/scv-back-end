@@ -6,7 +6,7 @@ using SCVBackend.Domain.Seed;
 using System;
 using System.Linq;
 
-namespace SCVBackend
+namespace SCVBackend.Domain
 {
     public static class ApplicationBuilderExtensions
     {
