@@ -1,7 +1,9 @@
 ﻿using CacheManager.Core;
 using EFSecondLevelCache.Core;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +47,7 @@ namespace SCVBackend
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
             services.AddResponseCompression(options => options.EnableForHttps = true);
 
+            /*
             services.AddEFSecondLevelCache();
 
             // Add an in-memory cache service provider
@@ -55,12 +58,22 @@ namespace SCVBackend
                         .WithMicrosoftMemoryCacheHandle()
                         .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromMinutes(10))
                         .Build());
+            */
+            /* TODO - Verify whether it will be possible to re-enable.
+            services.AddAntiforgery(options =>
+            {
+                options.Cookie.Name = "XSRF-TOKEN";
+                options.HeaderName = "X-XSRF-TOKEN";
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                options.SuppressXFrameOptionsHeader = false;
+            });
+            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseETagger();
+            //app.UseETagger();
 
             if (env.IsDevelopment())
             {
@@ -77,9 +90,10 @@ namespace SCVBackend
                     .SetPreflightMaxAge(TimeSpan.FromHours(1D))
                     .AllowAnyHeader()
                     .AllowAnyMethod()
+                    .AllowCredentials()
             );
 
-            app.UseEFSecondLevelCache();
+            //app.UseEFSecondLevelCache();
             app.MigrateDatabase();
             app.SeedDatabase();
 

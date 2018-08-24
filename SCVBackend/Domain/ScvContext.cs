@@ -20,7 +20,7 @@ namespace SCVBackend.Domain
         }
 
         public DbSet<Provider> Providers { get; set; }
-
+        /*
         public override int SaveChanges()
         {
             ChangeTracker.DetectChanges();
@@ -31,5 +31,6 @@ namespace SCVBackend.Domain
 
             return result;
         }
+        */
     }
 }
