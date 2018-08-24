@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SCVBackend.Domain;
+using SCVBackend.Domain.Entities;
 using SCVBackend.Model;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,6 +46,116 @@ namespace SCVBackend.Controllers
                 .ToListAsync();
 
             return Ok(new PagedResult<ProviderListModel>(providersCount, providers));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid? id = null)
+        {
+            ProviderEditModel providerEditModel;
+
+            if (id == null)
+            {
+                providerEditModel = new ProviderEditModel();
+
+                return Ok(providerEditModel);
+            }
+
+            var provider = await scvContext.Providers
+                .Cacheable()
+                .SingleOrDefaultAsync(p => p.Id == id);
+
+            if (provider == null)
+            {
+                return NotFound();
+            }
+
+            providerEditModel = new ProviderEditModel
+            {
+                Id = provider.Id,
+                Name = provider.Name,
+                BaseApiUrl = provider.BaseApiUrl
+            };
+
+            return Ok(providerEditModel);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken] TODO - Verify whether it will be possible to reenable.
+        public async Task<IActionResult> Post(
+            [
+                FromBody,
+                Bind
+                (
+                    nameof(ProviderCreateModel.Name),
+                    nameof(ProviderCreateModel.BaseApiUrl)
+                )
+            ] ProviderCreateModel providerCreateModel)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var provider = new Provider(Guid.NewGuid(), providerCreateModel.Name, providerCreateModel.BaseApiUrl);
+
+            scvContext.Add(provider);
+            await scvContext.SaveChangesAsync();
+
+            providerCreateModel.Id = provider.Id;
+
+            return Created($"providers/{providerCreateModel.Id}", providerCreateModel);
+        }
+
+        [HttpPut("{id}")]
+        //[ValidateAntiForgeryToken] TODO - Verify whether it will be possible to reenable.
+        public async Task<IActionResult> Put(
+            [FromRoute] Guid id,
+            [
+                FromBody,
+                Bind
+                (
+                    nameof(ProviderEditModel.Id),
+                    nameof(ProviderEditModel.Name),
+                    nameof(ProviderEditModel.BaseApiUrl)
+                )
+            ] ProviderEditModel providerEditModel)
+        {
+            if (!ModelState.IsValid || id != providerEditModel.Id)
+                return BadRequest(ModelState);
+
+            var provider = await scvContext.Providers
+                .Cacheable()
+                .SingleOrDefaultAsync(p => p.Id == id);
+
+            if (provider == null)
+            {
+                return NotFound();
+            }
+
+            provider.Name = providerEditModel.Name;
+            provider.BaseApiUrl = providerEditModel.Name;
+
+            await scvContext.SaveChangesAsync();
+
+            return Ok(providerEditModel);
+        }
+
+        [HttpDelete("{id}")]
+        //[ValidateAntiForgeryToken] TODO - Verify whether it will be possible to reenable.
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var provider = await scvContext.Providers
+                .Cacheable()
+                .SingleOrDefaultAsync(p => p.Id == id);
+
+            if (provider == null)
+            {
+                return NotFound();
+            }
+
+            scvContext.Providers.Remove(provider);
+
+            await scvContext.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }
