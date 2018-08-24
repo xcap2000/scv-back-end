@@ -30,7 +30,7 @@ namespace SCVBackend.Tests.Unit.Controllers
             [Fact]
             public async void ReturnsItemsNotNull()
             {
-                var result = await providersController.Get() as OkObjectResult;
+                var result = await providersController.Get(filter: null) as OkObjectResult;
 
                 var pagedResult = result.Value;
 
@@ -40,7 +40,7 @@ namespace SCVBackend.Tests.Unit.Controllers
             [Fact]
             public async void ReturnsItemsEmpty()
             {
-                var result = await providersController.Get() as OkObjectResult;
+                var result = await providersController.Get(filter: null) as OkObjectResult;
 
                 var pagedResult = result.Value as PagedResult<ProviderListModel>;
 
@@ -57,7 +57,7 @@ namespace SCVBackend.Tests.Unit.Controllers
                     c.Add(new Provider(Guid.NewGuid(), "Provider 1", "https://provider1.com/api"));
                 });
 
-                var result = await providersController.Get() as OkObjectResult;
+                var result = await providersController.Get(filter: null) as OkObjectResult;
 
                 var pagedResult = result.Value as PagedResult<ProviderListModel>;
 
@@ -76,7 +76,7 @@ namespace SCVBackend.Tests.Unit.Controllers
                     c.Add(provider);
                 });
 
-                var result = await providersController.Get() as OkObjectResult;
+                var result = await providersController.Get(filter: null) as OkObjectResult;
 
                 var pagedResult = result.Value as PagedResult<ProviderListModel>;
 
@@ -180,7 +180,7 @@ namespace SCVBackend.Tests.Unit.Controllers
                     c.Add(provider1);
                 });
 
-                var result = await providersController.Get() as OkObjectResult;
+                var result = await providersController.Get(filter: null) as OkObjectResult;
 
                 var pagedResult = result.Value as PagedResult<ProviderListModel>;
 
