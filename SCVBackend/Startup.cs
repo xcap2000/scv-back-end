@@ -47,7 +47,6 @@ namespace SCVBackend
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
             services.AddResponseCompression(options => options.EnableForHttps = true);
 
-            /*
             services.AddEFSecondLevelCache();
 
             // Add an in-memory cache service provider
@@ -58,7 +57,7 @@ namespace SCVBackend
                         .WithMicrosoftMemoryCacheHandle()
                         .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromMinutes(10))
                         .Build());
-            */
+
             /* TODO - Verify whether it will be possible to re-enable.
             services.AddAntiforgery(options =>
             {
@@ -73,7 +72,7 @@ namespace SCVBackend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //app.UseETagger();
+            app.UseETagger();
 
             if (env.IsDevelopment())
             {
@@ -93,7 +92,7 @@ namespace SCVBackend
                     .AllowCredentials()
             );
 
-            //app.UseEFSecondLevelCache();
+            app.UseEFSecondLevelCache();
             app.MigrateDatabase();
             app.SeedDatabase();
 

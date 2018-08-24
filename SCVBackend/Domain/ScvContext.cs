@@ -1,4 +1,6 @@
-﻿using EFSecondLevelCache.Core;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using EFSecondLevelCache.Core;
 using EFSecondLevelCache.Core.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -20,7 +22,7 @@ namespace SCVBackend.Domain
         }
 
         public DbSet<Provider> Providers { get; set; }
-        /*
+        
         public override int SaveChanges()
         {
             ChangeTracker.DetectChanges();
@@ -31,6 +33,16 @@ namespace SCVBackend.Domain
 
             return result;
         }
-        */
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ChangeTracker.DetectChanges();
+            var changedEntityNames = this.GetChangedEntityNames();
+
+            var result = await base.SaveChangesAsync(cancellationToken);
+            this.GetService<IEFCacheServiceProvider>().InvalidateCacheDependencies(changedEntityNames);
+
+            return result;
+        }
     }
 }

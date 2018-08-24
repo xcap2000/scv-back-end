@@ -42,7 +42,7 @@ namespace SCVBackend.Controllers
                         BaseApiUrl = p.BaseApiUrl
                     }
                 )
-                //.Cacheable()
+                .Cacheable()
                 .ToListAsync();
 
             return Ok(new PagedResult<ProviderListModel>(providersCount, providers));
@@ -60,7 +60,9 @@ namespace SCVBackend.Controllers
                 return Ok(providerEditModel);
             }
 
-            var provider = await scvContext.Providers.SingleOrDefaultAsync(p => p.Id == id);
+            var provider = await scvContext.Providers
+                .Cacheable()
+                .SingleOrDefaultAsync(p => p.Id == id);
 
             if (provider == null)
             {
@@ -119,7 +121,9 @@ namespace SCVBackend.Controllers
             if (!ModelState.IsValid || id != providerEditModel.Id)
                 return BadRequest(ModelState);
 
-            var provider = await scvContext.Providers.SingleOrDefaultAsync(p => p.Id == id);
+            var provider = await scvContext.Providers
+                .Cacheable()
+                .SingleOrDefaultAsync(p => p.Id == id);
 
             if (provider == null)
             {
@@ -138,7 +142,9 @@ namespace SCVBackend.Controllers
         //[ValidateAntiForgeryToken] TODO - Verify whether it will be possible to reenable.
         public async Task<IActionResult> Delete(Guid id)
         {
-            var provider = await scvContext.Providers.SingleOrDefaultAsync(p => p.Id == id);
+            var provider = await scvContext.Providers
+                .Cacheable()
+                .SingleOrDefaultAsync(p => p.Id == id);
 
             if (provider == null)
             {
