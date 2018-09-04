@@ -29,6 +29,7 @@ namespace SCVBackend.Domain
             using (var context = serviceScope.ServiceProvider.GetRequiredService<ScvContext>())
             {
                 context.SeedProviders();
+                context.SeedUsers();
             }
         }
     }

@@ -11,7 +11,8 @@ namespace SCVBackend.Domain
         {
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
 
             var configuration = configurationBuilder.Build();
             var connectionString = configuration.GetConnectionString("Default");
