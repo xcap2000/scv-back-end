@@ -30,7 +30,7 @@ namespace SCVBackend.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SignInModel signInModel)
+        public async Task<IActionResult> SignIn([FromBody] SignInModel signInModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
