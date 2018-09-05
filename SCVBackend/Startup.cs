@@ -1,12 +1,9 @@
 ﻿using CacheManager.Core;
 using EFSecondLevelCache.Core;
-using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -33,20 +30,10 @@ namespace SCVBackend
             this.environment = environment;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // TODO - Check if it is possible to remove.
-            if (environment.IsDevelopment())
-            {
-                services.AddDbContextPool<ScvContext>(
-                    options => options.UseNpgsql(configuration.GetConnectionString("Default")));
-            }
-            else
-            {
-                services.AddDbContextPool<ScvContext>(
-                    options => options.UseNpgsql(configuration.GetConnectionString("Default").Replace("SECRET_PASSWORD", configuration["SECRET_PASSWORD"])));
-            }
+            services.AddDbContextPool<ScvContext>(
+                options => options.UseNpgsql(configuration.WithSecretIfAvailable("ConnectionStrings:Default", "SECRET_PASSWORD")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCors();
@@ -55,7 +42,6 @@ namespace SCVBackend
 
             services.AddEFSecondLevelCache();
 
-            // Add an in-memory cache service provider
             services.AddSingleton(typeof(ICacheManager<>), typeof(BaseCacheManager<>));
             services.AddSingleton(typeof(ICacheManagerConfiguration),
                 new CacheManager.Core.ConfigurationBuilder()
@@ -75,30 +61,13 @@ namespace SCVBackend
                   options.RequireHttpsMetadata = true;
                   options.SaveToken = true;
 
-                  if (environment.IsDevelopment())
+                  options.TokenValidationParameters = new TokenValidationParameters()
                   {
-                      options.TokenValidationParameters = new TokenValidationParameters()
-                      {
-                          ValidIssuer = configuration["Tokens:Issuer"],
-                          ValidAudience = configuration["Tokens:Audience"],
-                          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Tokens:Key"]))
-                      };
-                  }
-                  else
-                  {
-                      options.TokenValidationParameters = new TokenValidationParameters()
-                      {
-                          ValidIssuer = configuration["Tokens:Issuer"].Replace("SECRET_ISSUER", configuration["SECRET_ISSUER"]),
-                          ValidAudience = configuration["Tokens:Audience"].Replace("SECRET_AUDIENCE", configuration["SECRET_AUDIENCE"]),
-                          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Tokens:Key"].Replace("SECRET_TOKEN", configuration["SECRET_TOKEN"])))
-                      };
-                  }
+                      ValidIssuer = configuration.WithSecretIfAvailable("Tokens:Issuer", "SECRET_ISSUER"),
+                      ValidAudience = configuration.WithSecretIfAvailable("Tokens:Audience", "SECRET_AUDIENCE"),
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.WithSecretIfAvailable("Tokens:Key", "SECRET_TOKEN")))
+                  };
               });
-
-            services.AddAuthorization(options =>
-            {
-                options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build();
-            });
 
             /* TODO - Verify whether it will be possible to re-enable.
             services.AddAntiforgery(options =>
@@ -111,7 +80,6 @@ namespace SCVBackend
             */
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseAuthentication();
