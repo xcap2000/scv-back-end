@@ -1,4 +1,5 @@
 ﻿using EFSecondLevelCache.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SCVBackend.Domain;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace SCVBackend.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class ProvidersController : Controller
     {
