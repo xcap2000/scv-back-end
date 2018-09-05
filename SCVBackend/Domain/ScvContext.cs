@@ -19,10 +19,12 @@ namespace SCVBackend.Domain
         {
             modelBuilder.HasPostgresExtension("uuid-ossp");
             modelBuilder.ApplyConfiguration(new ProviderConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
         }
 
         public DbSet<Provider> Providers { get; set; }
-        
+        public DbSet<User> Users { get; set; }
+
         public override int SaveChanges()
         {
             ChangeTracker.DetectChanges();
