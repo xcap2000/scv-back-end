@@ -49,13 +49,13 @@ namespace SCVBackend.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Tokens:Key"].Replace("SECRET_TOKEN", configuration["SECRET_TOKEN"])));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.WithSecretIfAvailable("Tokens:Key", "SECRET_TOKEN")));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken
             (
-                configuration["Tokens:Issuer"],
-                configuration["Tokens:Audience"],
+                configuration.WithSecretIfAvailable("Tokens:Issuer", "SECRET_ISSUER"),
+                configuration.WithSecretIfAvailable("Tokens:Audience", "SECRET_AUDIENCE"),
                 claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: credentials
