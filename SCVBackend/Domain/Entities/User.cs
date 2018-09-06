@@ -2,7 +2,6 @@
 
 namespace SCVBackend.Domain.Entities
 {
-    // TODO - Create user details table to save avatar image.
     public class User
     {
         public User
@@ -12,7 +11,8 @@ namespace SCVBackend.Domain.Entities
             string name,
             string email,
             string password,
-            string salt
+            string salt,
+            byte[] photo
             )
         {
             Id = id;
@@ -21,6 +21,7 @@ namespace SCVBackend.Domain.Entities
             Email = email;
             Password = password;
             Salt = salt;
+            Photo = photo;
         }
 
         public Guid Id { get; set; }
@@ -29,5 +30,6 @@ namespace SCVBackend.Domain.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public string Salt { get; set; }
+        public byte[] Photo { get; set; }
     }
 }

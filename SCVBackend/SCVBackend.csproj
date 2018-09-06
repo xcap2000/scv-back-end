@@ -5,6 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Domain\Seed\UserSeed\kbeludo.jpg" />
+    <None Remove="Domain\Seed\UserSeed\nakombi.jpg" />
+    <None Remove="Domain\Seed\UserSeed\namoto.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\Seed\UserSeed\kbeludo.jpg" />
+    <EmbeddedResource Include="Domain\Seed\UserSeed\nakombi.jpg" />
+    <EmbeddedResource Include="Domain\Seed\UserSeed\namoto.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

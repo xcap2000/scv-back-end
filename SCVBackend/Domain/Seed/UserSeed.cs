@@ -18,9 +18,9 @@ namespace SCVBackend.Domain.Seed
 
                 context.Users.AddRange
                     (
-                        new User(Guid.NewGuid(), Customer, "Fujika Maria Namoto", "namoto@gmail.com", password1, salt1),
-                        new User(Guid.NewGuid(), Seller, "Fujika Maria Nakombi", "nakombi@gmail.com", password2, salt2),
-                        new User(Guid.NewGuid(), Admin, "Pedro K. Beludo", "kbeludo@gmail.com", password3, salt3)
+                        new User(Guid.NewGuid(), Customer, "Fujika Maria Namoto", "namoto@gmail.com", password1, salt1, "namoto".Photo()),
+                        new User(Guid.NewGuid(), Seller, "Fujika Maria Nakombi", "nakombi@gmail.com", password2, salt2, "nakombi".Photo()),
+                        new User(Guid.NewGuid(), Admin, "Pedro K. Beludo", "kbeludo@gmail.com", password3, salt3, "kbeludo".Photo())
                     );
 
                 context.SaveChanges();
