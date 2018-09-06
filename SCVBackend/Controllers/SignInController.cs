@@ -37,7 +37,7 @@ namespace SCVBackend.Controllers
 
             var user = await scvContext.Users
                 .Where(u => u.Email == signInModel.Email)
-                .Select(u => new { u.Email, u.Password, u.Salt })
+                .Select(u => new { u.Id, u.Type, u.Name, u.Email, u.Password, u.Salt, u.Photo })
                 .FirstOrDefaultAsync();
 
             if (user == null || !signInModel.Password.IsValid(user.Password, user.Salt))
@@ -61,7 +61,9 @@ namespace SCVBackend.Controllers
                 signingCredentials: credentials
             );
 
-            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+            var serializedToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return Ok(new SignInResponseModel(serializedToken, user.Id, user.Type, user.Name, user.Photo.ToBase64()));
         }
     }
 }

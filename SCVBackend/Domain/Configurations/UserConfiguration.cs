@@ -34,6 +34,9 @@ namespace SCVBackend.Domain.Configurations
                 .HasMaxLength(16)
                 .IsFixedLength()
                 .IsRequired();
+
+            builder.Property(p => p.Photo)
+                .IsRequired();
         }
     }
 }
