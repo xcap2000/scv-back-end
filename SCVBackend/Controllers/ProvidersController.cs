@@ -82,7 +82,6 @@ namespace SCVBackend.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken] TODO - Verify whether it will be possible to reenable.
         public async Task<IActionResult> Post(
             [
                 FromBody,
@@ -107,7 +106,6 @@ namespace SCVBackend.Controllers
         }
 
         [HttpPut("{id}")]
-        //[ValidateAntiForgeryToken] TODO - Verify whether it will be possible to reenable.
         public async Task<IActionResult> Put(
             [FromRoute] Guid id,
             [
@@ -133,7 +131,7 @@ namespace SCVBackend.Controllers
             }
 
             provider.Name = providerEditModel.Name;
-            provider.BaseApiUrl = providerEditModel.Name;
+            provider.BaseApiUrl = providerEditModel.BaseApiUrl;
 
             await scvContext.SaveChangesAsync();
 
@@ -141,7 +139,6 @@ namespace SCVBackend.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[ValidateAntiForgeryToken] TODO - Verify whether it will be possible to reenable.
         public async Task<IActionResult> Delete(Guid id)
         {
             var provider = await scvContext.Providers

@@ -20,10 +20,17 @@ namespace SCVBackend.Domain
             modelBuilder.HasPostgresExtension("uuid-ossp");
             modelBuilder.ApplyConfiguration(new ProviderConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new BrandConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
         }
 
         public DbSet<Provider> Providers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public override int SaveChanges()
         {

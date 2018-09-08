@@ -32,9 +32,9 @@ namespace SCVBackend.Tests.Unit.Controllers
             {
                 var result = await providersController.Get(filter: null) as OkObjectResult;
 
-                var pagedResult = result.Value;
+                var pagedResultModel = result.Value;
 
-                NotNull(pagedResult);
+                NotNull(pagedResultModel);
             }
 
             [Fact]
@@ -42,9 +42,9 @@ namespace SCVBackend.Tests.Unit.Controllers
             {
                 var result = await providersController.Get(filter: null) as OkObjectResult;
 
-                var pagedResult = result.Value as PagedResult<ProviderListModel>;
+                var pagedResultModel = result.Value as PagedResult<ProviderListModel>;
 
-                var items = pagedResult.Items;
+                var items = pagedResultModel.Items;
 
                 Empty(items);
             }
@@ -59,9 +59,9 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 var result = await providersController.Get(filter: null) as OkObjectResult;
 
-                var pagedResult = result.Value as PagedResult<ProviderListModel>;
+                var pagedResultModel = result.Value as PagedResult<ProviderListModel>;
 
-                var list = pagedResult.Items;
+                var list = pagedResultModel.Items;
 
                 NotEmpty(list);
             }
@@ -78,9 +78,9 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 var result = await providersController.Get(filter: null) as OkObjectResult;
 
-                var pagedResult = result.Value as PagedResult<ProviderListModel>;
+                var pagedResultModel = result.Value as PagedResult<ProviderListModel>;
 
-                var list = pagedResult.Items;
+                var list = pagedResultModel.Items;
 
                 var item = list.Single();
 
@@ -103,9 +103,9 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 var result = await providersController.Get("Provider 2") as OkObjectResult;
 
-                var pagedResult = result.Value as PagedResult<ProviderListModel>;
+                var pagedResultModel = result.Value as PagedResult<ProviderListModel>;
 
-                var list = pagedResult.Items;
+                var list = pagedResultModel.Items;
 
                 var item = list.Single();
 
@@ -128,9 +128,9 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 var result = await providersController.Get("provider1") as OkObjectResult;
 
-                var pagedResult = result.Value as PagedResult<ProviderListModel>;
+                var pagedResultModel = result.Value as PagedResult<ProviderListModel>;
 
-                var list = pagedResult.Items;
+                var list = pagedResultModel.Items;
 
                 var item = list.Single();
 
@@ -153,9 +153,9 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 var result = await providersController.Get(page: 2, itemsPerPage: 1) as OkObjectResult;
 
-                var pagedResult = result.Value as PagedResult<ProviderListModel>;
+                var pagedResultModel = result.Value as PagedResult<ProviderListModel>;
 
-                var list = pagedResult.Items;
+                var list = pagedResultModel.Items;
 
                 var item = list.Single();
 
@@ -182,9 +182,9 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 var result = await providersController.Get(filter: null) as OkObjectResult;
 
-                var pagedResult = result.Value as PagedResult<ProviderListModel>;
+                var pagedResultModel = result.Value as PagedResult<ProviderListModel>;
 
-                var list = pagedResult.Items;
+                var list = pagedResultModel.Items;
 
                 var item = list.First();
 
@@ -215,9 +215,9 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 var result = await providersController.Get(page: 1, itemsPerPage: 2) as OkObjectResult;
 
-                var pagedResult = result.Value as PagedResult<ProviderListModel>;
+                var pagedResultModel = result.Value as PagedResult<ProviderListModel>;
 
-                var list = pagedResult.Items as IEnumerable<ProviderListModel>;
+                var list = pagedResultModel.Items as IEnumerable<ProviderListModel>;
 
                 var fistItem = list.First();
                 var secondItem = list.Skip(1).First();
@@ -249,9 +249,9 @@ namespace SCVBackend.Tests.Unit.Controllers
 
                 var result = await providersController.Get(page: 1, itemsPerPage: 2) as OkObjectResult;
 
-                var pagedResult = result.Value as PagedResult<ProviderListModel>;
+                var pagedResultModel = result.Value as PagedResult<ProviderListModel>;
 
-                Equal(4L, pagedResult.TotalCount);
+                Equal(4L, pagedResultModel.TotalCount);
             }
         }
 
