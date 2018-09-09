@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SCVBackend.Domain.Entities
 {
     public class User
     {
         public User
-            (
+        (
             Guid id,
             UserType type,
             string name,
@@ -13,7 +14,7 @@ namespace SCVBackend.Domain.Entities
             string password,
             string salt,
             byte[] photo
-            )
+        )
         {
             Id = id;
             Type = type;
@@ -31,5 +32,6 @@ namespace SCVBackend.Domain.Entities
         public string Password { get; set; }
         public string Salt { get; set; }
         public byte[] Photo { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }

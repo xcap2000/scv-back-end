@@ -10,32 +10,33 @@ namespace SCVBackend.Domain.Configurations
         {
             builder.ToTable("User");
 
-            builder.HasKey(p => p.Id);
+            builder.HasKey(u => u.Id);
 
-            builder.Property(p => p.Id);
-
-            builder.Property(p => p.Type)
+            builder.Property(u => u.Id)
                 .IsRequired();
 
-            builder.Property(p => p.Name)
+            builder.Property(u => u.Type)
+                .IsRequired();
+
+            builder.Property(u => u.Name)
                 .HasMaxLength(100)
                 .IsRequired();
 
-            builder.Property(p => p.Email)
+            builder.Property(u => u.Email)
                 .HasMaxLength(100)
                 .IsRequired();
 
-            builder.Property(p => p.Password)
+            builder.Property(u => u.Password)
                 .HasMaxLength(64)
                 .IsFixedLength()
                 .IsRequired();
 
-            builder.Property(p => p.Salt)
+            builder.Property(u => u.Salt)
                 .HasMaxLength(16)
                 .IsFixedLength()
                 .IsRequired();
 
-            builder.Property(p => p.Photo)
+            builder.Property(u => u.Photo)
                 .IsRequired();
         }
     }

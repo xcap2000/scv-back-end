@@ -12,6 +12,7 @@ using System;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace SCVBackend.Controllers
 {
@@ -43,10 +44,11 @@ namespace SCVBackend.Controllers
             if (user == null || !signInModel.Password.IsValid(user.Password, user.Salt))
                 return NotFound();
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, user.Type.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.WithSecretIfAvailable("Tokens:Key", "SECRET_TOKEN")));

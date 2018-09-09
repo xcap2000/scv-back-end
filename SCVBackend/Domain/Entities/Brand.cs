@@ -3,23 +3,23 @@ using System.Collections.Generic;
 
 namespace SCVBackend.Domain.Entities
 {
-    public class Provider
+    public class Brand
     {
-        public Provider
+        public Brand
         (
             Guid id,
             string name,
-            string baseApiUrl
+            byte[] logo
         )
         {
             Id = id;
             Name = name;
-            BaseApiUrl = baseApiUrl;
+            Logo = logo;
         }
 
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string BaseApiUrl { get; set; }
+        public byte[] Logo { get; set; }
         public ICollection<Product> Products { get; set; }
     }
 }
