@@ -17,7 +17,7 @@ namespace SCVBackend.Domain.Seed
                     (
                         Guid.Parse("fd1c21b9-57c0-4c9c-9d63-7a775638ec4b"),
                         "Mont Blanc",
-                        "kbeludo".Image("BrandSeed")
+                        "montblanc".Image("BrandSeed")
                     ),
                     new Brand
                     (

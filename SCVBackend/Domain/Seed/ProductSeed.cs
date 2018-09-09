@@ -27,7 +27,7 @@ namespace SCVBackend.Domain.Seed
                     ),
                     new Product
                     (
-                        Guid.Parse("7a95fc88-b230-4167-abd3-b9237b8a845b"),
+                        Guid.Parse("8c1486c0-fe23-404b-8ecc-806831321d9d"),
                         "MEISTERSTUCK CLASSIC",
                         25,
                         2_000M,
@@ -38,7 +38,7 @@ namespace SCVBackend.Domain.Seed
                     ),
                     new Product
                     (
-                        Guid.Parse("7a95fc88-b230-4167-abd3-b9237b8a845b"),
+                        Guid.Parse("ec59e5bd-417a-42da-bf83-d04e9c7d854a"),
                         "MEISTERSTUCK MOZART",
                         25,
                         2_100M,
@@ -106,7 +106,7 @@ namespace SCVBackend.Domain.Seed
                     ),
                     new Product
                     (
-                        Guid.Parse("6c67dbb1-05a3-4ea8-a2f0-35a3966c9138"),
+                        Guid.Parse("bbaec517-01c3-4ec5-8644-5cb4759d57c6"),
                         "ROYAL COLLECT MARFIM LACQ",
                         100,
                         350M,

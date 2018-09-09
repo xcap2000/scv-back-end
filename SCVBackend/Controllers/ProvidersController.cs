@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SCVBackend.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     public class ProvidersController : Controller
     {

@@ -31,6 +31,7 @@ namespace SCVBackend.Domain
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         public override int SaveChanges()
         {

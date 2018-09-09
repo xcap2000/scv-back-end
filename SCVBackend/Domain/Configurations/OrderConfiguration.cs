@@ -15,14 +15,13 @@ namespace SCVBackend.Domain.Configurations
             builder.Property(o => o.Id)
                 .IsRequired();
 
-            builder.Property(o => o.OrderNumber)
-                .IsRequired();
-
             builder.Property(o => o.OrderStatus)
                 .IsRequired();
 
             builder.Property(o => o.UserId)
                 .IsRequired();
+
+            builder.Property(o => o.OrderNumber);
 
             builder.Property(o => o.CloseDate);
         }
