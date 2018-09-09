@@ -12,7 +12,7 @@ using SCVBackend.Domain.Entities;
 
 namespace SCVBackend.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Customer, Seller")]
     [Route("api/selling-products")]
     public class SellingProductsController : Controller
     {

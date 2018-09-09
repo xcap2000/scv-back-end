@@ -33,7 +33,7 @@ namespace SCVBackend.Domain.Entities
         {
             get
             {
-                return OrderItems?.Sum(o => o.Price) ?? 0M;
+                return OrderItems?.Sum(o => o.Subtotal) ?? 0M;
             }
         }
     }

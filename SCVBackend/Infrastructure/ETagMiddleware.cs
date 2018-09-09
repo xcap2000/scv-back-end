@@ -51,8 +51,8 @@ namespace SCVBackend.Infrastructure
             if (response.StatusCode != StatusCodes.Status200OK)
                 return false;
 
-            // The 20kb length limit is not based in science. Feel free to change
-            if (response.Body.Length > 20 * 1024)
+            // The 2MB length limit is not based in science. Feel free to change
+            if (response.Body.Length > 2 * 1024 * 1024)
                 return false;
 
             if (response.Headers.ContainsKey(HeaderNames.ETag))

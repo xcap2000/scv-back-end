@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EFSecondLevelCache.Core;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SCVBackend.Domain;
 using SCVBackend.Domain.Entities;
+using SCVBackend.Infrastructure;
 using SCVBackend.Model;
 
 namespace SCVBackend.Controllers
@@ -23,7 +23,7 @@ namespace SCVBackend.Controllers
             this.scvContext = scvContext;
         }
 
-        [HttpGet]
+        [HttpGet("{userId}")]
         public async Task<IActionResult> Get(Guid userId)
         {
             var order = await scvContext.Orders
@@ -35,22 +35,24 @@ namespace SCVBackend.Controllers
 
             if (order == null)
             {
-                return Ok(null);
+                return Ok();
             }
 
             var cart = new CartModel
             {
                 Id = order.Id,
                 Total = order.Total,
-                CartItems = order.OrderItems.Select
+                CartItems = order.OrderItems.OrderBy(o => o.Product.Name).Select
                 (
                     o =>
                     new CartItemModel
                     {
                         Id = o.Id,
+                        Photo = o.Product.Photo.ToBase64(),
                         ProductName = o.Product.Name,
                         Quantity = o.Quantity,
-                        Price = o.Price
+                        Price = o.Price,
+                        Subtotal = o.Subtotal
                     }
                 )
                 .ToList()
@@ -80,7 +82,10 @@ namespace SCVBackend.Controllers
                 scvContext.Orders.Add(order);
             }
 
-            var product = await scvContext.Products.SingleAsync(p => p.Id == addToCartModel.ProductId);
+            var product = await scvContext.Products
+                .Where(p => p.Id == addToCartModel.ProductId)
+                .Cacheable()
+                .SingleAsync();
 
             var orderItem = new OrderItem(Guid.NewGuid(), 1, product.SellPrice, order.Id, product.Id);
 
@@ -97,6 +102,46 @@ namespace SCVBackend.Controllers
             };
 
             return Ok(cartItemModel);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] UpdateCartItemModel updateCartItemModel)
+        {
+            var orderItem = await scvContext.OrderItems
+                .Where(o => o.Id == updateCartItemModel.CartItemId)
+                .Cacheable()
+                .SingleAsync();
+
+            orderItem.Quantity = updateCartItemModel.Quantity;
+
+            scvContext.OrderItems.Update(orderItem);
+
+            await scvContext.SaveChangesAsync();
+
+            return Ok(true);
+        }
+
+        [HttpDelete("{cartItemId}")]
+        public async Task<IActionResult> Delete(Guid cartItemId)
+        {
+            var order = await scvContext.Orders
+                .Include(o => o.OrderItems)
+                .Where(o => o.OrderItems.Any(i => i.Id == cartItemId))
+                .Cacheable()
+                .SingleOrDefaultAsync();
+
+            var orderItemToRemove = order.OrderItems.Single(i => i.Id == cartItemId);
+
+            scvContext.OrderItems.Remove(orderItemToRemove);
+
+            if (order.OrderItems.Count() == 1)
+            {
+                scvContext.Orders.Remove(order);
+            }
+
+            await scvContext.SaveChangesAsync();
+
+            return Ok(true);
         }
     }
 }

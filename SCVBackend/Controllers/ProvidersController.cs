@@ -29,6 +29,7 @@ namespace SCVBackend.Controllers
                 .Where(p => filter != null ? p.Name.Contains(filter) || p.BaseApiUrl.Contains(filter) : true);
 
             var providersCount = await providersQuery
+                .Cacheable()
                 .CountAsync();
 
             var providers = await providersQuery
@@ -63,8 +64,9 @@ namespace SCVBackend.Controllers
             }
 
             var provider = await scvContext.Providers
+                .Where(p => p.Id == id)
                 .Cacheable()
-                .SingleOrDefaultAsync(p => p.Id == id);
+                .SingleOrDefaultAsync();
 
             if (provider == null)
             {
@@ -98,6 +100,7 @@ namespace SCVBackend.Controllers
             var provider = new Provider(Guid.NewGuid(), providerCreateModel.Name, providerCreateModel.BaseApiUrl);
 
             scvContext.Add(provider);
+
             await scvContext.SaveChangesAsync();
 
             providerCreateModel.Id = provider.Id;
@@ -122,8 +125,9 @@ namespace SCVBackend.Controllers
                 return BadRequest(ModelState);
 
             var provider = await scvContext.Providers
+                .Where(p => p.Id == id)
                 .Cacheable()
-                .SingleOrDefaultAsync(p => p.Id == id);
+                .SingleOrDefaultAsync();
 
             if (provider == null)
             {
@@ -142,8 +146,9 @@ namespace SCVBackend.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var provider = await scvContext.Providers
+                .Where(p => p.Id == id)
                 .Cacheable()
-                .SingleOrDefaultAsync(p => p.Id == id);
+                .SingleOrDefaultAsync();
 
             if (provider == null)
             {

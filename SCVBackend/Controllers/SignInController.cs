@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using EFSecondLevelCache.Core;
 
 namespace SCVBackend.Controllers
 {
@@ -39,6 +40,7 @@ namespace SCVBackend.Controllers
             var user = await scvContext.Users
                 .Where(u => u.Email == signInModel.Email)
                 .Select(u => new { u.Id, u.Type, u.Name, u.Email, u.Password, u.Salt, u.Photo })
+                .Cacheable()
                 .FirstOrDefaultAsync();
 
             if (user == null || !signInModel.Password.IsValid(user.Password, user.Salt))
