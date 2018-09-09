@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SCVBackend.Model
 {
@@ -6,6 +7,6 @@ namespace SCVBackend.Model
     {
         public Guid Id { get; set; }
         public decimal Total { get; set; }
-        public object CartItems { get; set; }
+        public IList<CartItemModel> CartItems { get; set; }
     }
 }
