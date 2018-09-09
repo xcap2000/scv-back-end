@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using SCVBackend.Domain;
 using SCVBackend.Domain.Seed;
-using System;
-using System.Linq;
 
 namespace SCVBackend.Domain
 {
@@ -28,8 +25,11 @@ namespace SCVBackend.Domain
             using (var serviceScope = serviceScopeFactory.CreateScope())
             using (var context = serviceScope.ServiceProvider.GetRequiredService<ScvContext>())
             {
-                context.SeedProviders();
                 context.SeedUsers();
+                context.SeedBrands();
+                context.SeedProviders();
+                context.SeedProducts();
+                context.SeedOrders();
             }
         }
     }

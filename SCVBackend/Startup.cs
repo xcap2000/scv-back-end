@@ -1,7 +1,6 @@
 ﻿using CacheManager.Core;
 using EFSecondLevelCache.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -68,16 +67,6 @@ namespace SCVBackend
                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.WithSecretIfAvailable("Tokens:Key", "SECRET_TOKEN")))
                   };
               });
-
-            /* TODO - Verify whether it will be possible to re-enable.
-            services.AddAntiforgery(options =>
-            {
-                options.Cookie.Name = "XSRF-TOKEN";
-                options.HeaderName = "X-XSRF-TOKEN";
-                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
-                options.SuppressXFrameOptionsHeader = false;
-            });
-            */
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

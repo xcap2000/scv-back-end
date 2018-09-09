@@ -5,12 +5,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Domain\Seed\BrandSeed\crown.jpg" />
+    <None Remove="Domain\Seed\BrandSeed\montblanc.jpg" />
+    <None Remove="Domain\Seed\BrandSeed\parker.jpg" />
+    <None Remove="Domain\Seed\ProductSeed\classic-barcelona.jpg" />
+    <None Remove="Domain\Seed\ProductSeed\duofold-3-centennial.jpg" />
+    <None Remove="Domain\Seed\ProductSeed\fashion-cristal.jpg" />
+    <None Remove="Domain\Seed\ProductSeed\inflection.jpg" />
+    <None Remove="Domain\Seed\ProductSeed\meisterstuck-classic.jpg" />
+    <None Remove="Domain\Seed\ProductSeed\meisterstuck-moz-solit-ver.jpg" />
+    <None Remove="Domain\Seed\ProductSeed\meisterstuck-mozart.jpg" />
+    <None Remove="Domain\Seed\ProductSeed\royal-collect-marfim-lacq.jpg" />
+    <None Remove="Domain\Seed\ProductSeed\sonnet-4-chisseled.jpg" />
     <None Remove="Domain\Seed\UserSeed\kbeludo.jpg" />
     <None Remove="Domain\Seed\UserSeed\nakombi.jpg" />
     <None Remove="Domain\Seed\UserSeed\namoto.jpg" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Domain\Seed\BrandSeed\crown.jpg" />
+    <EmbeddedResource Include="Domain\Seed\BrandSeed\montblanc.jpg" />
+    <EmbeddedResource Include="Domain\Seed\BrandSeed\parker.jpg" />
+    <EmbeddedResource Include="Domain\Seed\ProductSeed\classic-barcelona.jpg" />
+    <EmbeddedResource Include="Domain\Seed\ProductSeed\duofold-3-centennial.jpg" />
+    <EmbeddedResource Include="Domain\Seed\ProductSeed\fashion-cristal.jpg" />
+    <EmbeddedResource Include="Domain\Seed\ProductSeed\inflection.jpg" />
+    <EmbeddedResource Include="Domain\Seed\ProductSeed\meisterstuck-classic.jpg" />
+    <EmbeddedResource Include="Domain\Seed\ProductSeed\meisterstuck-moz-solit-ver.jpg" />
+    <EmbeddedResource Include="Domain\Seed\ProductSeed\meisterstuck-mozart.jpg" />
+    <EmbeddedResource Include="Domain\Seed\ProductSeed\royal-collect-marfim-lacq.jpg" />
+    <EmbeddedResource Include="Domain\Seed\ProductSeed\sonnet-4-chisseled.jpg" />
     <EmbeddedResource Include="Domain\Seed\UserSeed\kbeludo.jpg" />
     <EmbeddedResource Include="Domain\Seed\UserSeed\nakombi.jpg" />
     <EmbeddedResource Include="Domain\Seed\UserSeed\namoto.jpg" />
