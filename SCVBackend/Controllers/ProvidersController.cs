@@ -137,6 +137,8 @@ namespace SCVBackend.Controllers
             provider.Name = providerEditModel.Name;
             provider.BaseApiUrl = providerEditModel.BaseApiUrl;
 
+            scvContext.Providers.Update(provider);
+
             await scvContext.SaveChangesAsync();
 
             return Ok(providerEditModel);

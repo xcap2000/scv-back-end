@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using EFSecondLevelCache.Core;
@@ -102,6 +103,46 @@ namespace SCVBackend.Controllers
             };
 
             return Ok(cartItemModel);
+        }
+
+        [HttpPost]
+        [Route("checkout")]
+        public async Task<IActionResult> Checkout([FromBody] CheckoutModel checkoutModel)
+        {
+            using (scvContext.Database.BeginTransaction(IsolationLevel.Serializable))
+            {
+                var order = await scvContext.Orders
+                    .Where(o => o.Id == checkoutModel.CartId)
+                    .Cacheable()
+                    .SingleAsync();
+
+                var orderNumber = await scvContext.Orders
+                    .MaxAsync(o => o.OrderNumber) ?? 0;
+
+                order.OrderNumber = ++orderNumber;
+                order.OrderStatus = OrderStatus.Closed;
+                order.CloseDate = DateTime.Now;
+
+                scvContext.Orders.Update(order);
+
+                var orderDetails = new OrderDetails
+                {
+                    OrderId = checkoutModel.CartId,
+                    Street = checkoutModel.Street,
+                    City = checkoutModel.City,
+                    State = checkoutModel.City,
+                    Country = checkoutModel.Country,
+                    PostalCode = checkoutModel.PostalCode,
+                    CreditCardNumber = checkoutModel.CreditCardNumber,
+                    VerificationCode = checkoutModel.VerificationCode
+                };
+
+                scvContext.OrderDetails.Add(orderDetails);
+
+                await scvContext.SaveChangesAsync();
+
+                return Ok(orderNumber);
+            }
         }
 
         [HttpPut]

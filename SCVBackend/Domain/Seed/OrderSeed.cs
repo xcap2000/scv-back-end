@@ -34,6 +34,16 @@ namespace SCVBackend.Domain.Seed
                                 Guid.Parse("3685851e-ef23-4b64-a8bb-92deb07e24a0"),
                                 Guid.Parse("7a95fc88-b230-4167-abd3-b9237b8a845b")
                             )
+                        },
+                        OrderDetails = new OrderDetails
+                        {
+                            Street = "Rua Monteiro Lobato 2100",
+                            City = "Caçapava",
+                            State = "São Paulo",
+                            Country = "Brasil",
+                            PostalCode = "12280-018",
+                            CreditCardNumber = "845651231687651321",
+                            VerificationCode = "222"
                         }
                     }
                 );
