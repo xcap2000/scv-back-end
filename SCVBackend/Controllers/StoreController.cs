@@ -3,7 +3,6 @@ using SCVBackend.Domain;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 using SCVBackend.Model;
 using SCVBackend.Infrastructure;
 using EFSecondLevelCache.Core;
@@ -12,39 +11,38 @@ using SCVBackend.Domain.Entities;
 
 namespace SCVBackend.Controllers
 {
-    [Authorize(Roles = "Customer, Seller")]
-    [Route("api/selling-products")]
-    public class SellingProductsController : Controller
+    [Route("api/[controller]")]
+    public class StoreController : Controller
     {
         private readonly ScvContext scvContext;
 
-        public SellingProductsController(ScvContext scvContext)
+        public StoreController(ScvContext scvContext)
         {
             this.scvContext = scvContext;
         }
 
-        [HttpGet("{userId:Guid}/{brandId:Guid?}")]
-        public async Task<IActionResult> Get(Guid userId, Guid? brandId = null)
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] Guid? userId = null, [FromQuery] Guid? brandId = null)
         {
-            var sellingProducts = await scvContext.Products
+            var storeListModels = await scvContext.Products
                 .Where(p => brandId != null ? p.BrandId == brandId : true)
                 .OrderBy(p => p.Name)
                 .Select
                 (
-                    p => new SellingProductListModel
+                    p => new StoreListModel
                     {
                         Id = p.Id,
                         Name = p.Name,
                         Price = p.SellPrice,
                         CanSell = p.Quantity > 0,
                         Photo = p.Photo.ToBase64(),
-                        InCart = p.OrderItems.Any(o => o.Order.UserId == userId && o.Order.OrderStatus == OrderStatus.Open)
+                        InCart = p.OrderItems.Any(o => userId != null ? o.Order.UserId == userId && o.Order.OrderStatus == OrderStatus.Open : true)
                     }
                 )
                 .Cacheable()
                 .ToListAsync();
 
-            return Ok(sellingProducts);
+            return Ok(storeListModels);
         }
     }
 }

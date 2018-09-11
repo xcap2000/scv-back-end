@@ -24,6 +24,7 @@ namespace SCVBackend.Domain
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderDetailsConfiguration());
         }
 
         public DbSet<Provider> Providers { get; set; }
@@ -32,6 +33,7 @@ namespace SCVBackend.Domain
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
 
         public override int SaveChanges()
         {

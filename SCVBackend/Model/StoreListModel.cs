@@ -2,7 +2,7 @@
 
 namespace SCVBackend.Model
 {
-    public class SellingProductListModel
+    public class StoreListModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

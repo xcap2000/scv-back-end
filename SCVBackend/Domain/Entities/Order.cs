@@ -29,6 +29,7 @@ namespace SCVBackend.Domain.Entities
         public long? OrderNumber { get; set; }
         public DateTime? CloseDate { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
+        public OrderDetails OrderDetails { get; set; }
         public decimal Total
         {
             get

@@ -27,7 +27,7 @@ namespace SCVBackend.Domain.Seed
                     new Provider
                     (
                         Guid.Parse("1406bbf9-92c2-41be-96ce-3a2b67123486"),
-                        "Mont Blanc Provider",
+                        "Crown Provider",
                         "https://crown-provider.com/api"
                     )
                 );
