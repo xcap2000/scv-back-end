@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace SCVBackend.Controllers
 {
-    [Authorize(Roles = "Customer, Seller, Admin")]
     [Route("api/[controller]")]
     public class BrandsController : Controller
     {
