@@ -109,7 +109,7 @@ namespace SCVBackend.Controllers
         [Route("checkout")]
         public async Task<IActionResult> Checkout([FromBody] CheckoutModel checkoutModel)
         {
-            using (scvContext.Database.BeginTransaction(IsolationLevel.Serializable))
+            using (var transaction = scvContext.Database.BeginTransaction(IsolationLevel.Serializable))
             {
                 var order = await scvContext.Orders
                     .Where(o => o.Id == checkoutModel.CartId)
@@ -140,6 +140,8 @@ namespace SCVBackend.Controllers
                 scvContext.OrderDetails.Add(orderDetails);
 
                 await scvContext.SaveChangesAsync();
+
+                transaction.Commit();
 
                 return Ok(orderNumber);
             }
