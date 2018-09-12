@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SCVBackend.Domain;
+using SCVBackend.ExternalServices;
 using SCVBackend.Infrastructure;
 using System;
 using System.IO.Compression;
@@ -31,6 +32,7 @@ namespace SCVBackend
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IProviderService, FakeIProviderService>();
             services.AddDbContextPool<ScvContext>(
                 options => options.UseNpgsql(configuration.WithSecretIfAvailable("ConnectionStrings:Default", "SECRET_PASSWORD")));
 

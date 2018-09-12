@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SCVBackend.Domain;
 using SCVBackend.Domain.Entities;
+using SCVBackend.ExternalServices;
 using SCVBackend.Infrastructure;
 using SCVBackend.Model;
 
@@ -19,9 +20,13 @@ namespace SCVBackend.Controllers
     {
         private readonly ScvContext scvContext;
 
-        public CartController(ScvContext scvContext)
+        private readonly IProviderService providerService;
+
+        public CartController(ScvContext scvContext, IProviderService providerService)
         {
             this.scvContext = scvContext;
+
+            this.providerService = providerService;
         }
 
         [HttpGet("{userId}")]
@@ -112,6 +117,7 @@ namespace SCVBackend.Controllers
             using (var transaction = scvContext.Database.BeginTransaction(IsolationLevel.Serializable))
             {
                 var order = await scvContext.Orders
+                    .Include(o => o.OrderItems)
                     .Where(o => o.Id == checkoutModel.CartId)
                     .Cacheable()
                     .SingleAsync();
@@ -140,6 +146,8 @@ namespace SCVBackend.Controllers
                 scvContext.OrderDetails.Add(orderDetails);
 
                 await scvContext.SaveChangesAsync();
+
+                await providerService.SellProductsAsync(order);
 
                 transaction.Commit();
 
