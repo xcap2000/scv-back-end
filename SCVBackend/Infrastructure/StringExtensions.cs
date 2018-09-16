@@ -7,7 +7,7 @@ namespace SCVBackend.Infrastructure
     {
         public static byte[] Image(this string photoKey, string seedKey)
         {
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"SCVBackend.Domain.Seed.{seedKey}.{photoKey}.jpg");
+            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"SCVBackend.Domain.Seed.{seedKey}.{photoKey}.gif");
 
             var memoryStream = new MemoryStream((int)stream.Length);
 
