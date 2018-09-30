@@ -136,7 +136,7 @@ namespace SCVBackend.Controllers
                     OrderId = checkoutModel.CartId,
                     Street = checkoutModel.Street,
                     City = checkoutModel.City,
-                    State = checkoutModel.City,
+                    State = checkoutModel.State,
                     Country = checkoutModel.Country,
                     PostalCode = checkoutModel.PostalCode,
                     CreditCardNumber = checkoutModel.CreditCardNumber,
