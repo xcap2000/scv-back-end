@@ -22,6 +22,23 @@ namespace SCVBackend.Controllers
             this.scvContext = scvContext;
         }
 
+        /// <summary>
+        ///     Lists providers, allows filtering and requires paging.
+        /// </summary>
+        /// <param name="filter">
+        ///     Used to filter providers based on their names or URLs.
+        /// </param>
+        /// <param name="page">
+        ///     The desired page to be retrieved.
+        /// </param>
+        /// <param name="itemsPerPage">
+        ///     The desired items per page to be retrieved.
+        /// </param>
+        /// <returns>
+        ///     A list of 
+        /// </returns>
+        [ProducesResponseType(200)]
+        [Produces(typeof(PagedResult<ProviderListModel>))]
         [HttpGet]
         public async Task<IActionResult> Get(string filter = null, int page = 1, int itemsPerPage = 10)
         {
@@ -51,6 +68,18 @@ namespace SCVBackend.Controllers
             return Ok(new PagedResult<ProviderListModel>(providersCount, providers));
         }
 
+        /// <summary>
+        ///     Gets the provider to be edited/deleted.
+        /// </summary>
+        /// <param name="id">
+        ///     The provider's id.
+        /// </param>
+        /// <returns>
+        ///     The provider's to be edited/deleted.
+        /// </returns>
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        [Produces(typeof(ProviderEditModel))]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid? id = null)
         {
@@ -83,6 +112,18 @@ namespace SCVBackend.Controllers
             return Ok(providerEditModel);
         }
 
+        /// <summary>
+        ///     Creates an new provider.
+        /// </summary>
+        /// <param name="providerCreateModel">
+        ///     The model representing the provider to be added.
+        /// </param>
+        /// <returns>
+        ///     The added provider with the generated id.
+        /// </returns>
+        [ProducesResponseType(400)]
+        [ProducesResponseType(200)]
+        [Produces(typeof(ProviderCreateModel))]
         [HttpPost]
         public async Task<IActionResult> Post(
             [
@@ -95,7 +136,9 @@ namespace SCVBackend.Controllers
             ] ProviderCreateModel providerCreateModel)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var provider = new Provider(Guid.NewGuid(), providerCreateModel.Name, providerCreateModel.BaseApiUrl);
 
@@ -108,6 +151,22 @@ namespace SCVBackend.Controllers
             return Created($"providers/{providerCreateModel.Id}", providerCreateModel);
         }
 
+        /// <summary>
+        ///     Edits a provider.
+        /// </summary>
+        /// <param name="id">
+        ///     The id of the provider to be edited.
+        /// </param>
+        /// <param name="providerEditModel">
+        ///     The model representing the provider to be edited.
+        /// </param>
+        /// <returns>
+        ///     The edited provider.
+        /// </returns>
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        [Produces(typeof(ProviderEditModel))]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(
             [FromRoute] Guid id,
@@ -122,7 +181,9 @@ namespace SCVBackend.Controllers
             ] ProviderEditModel providerEditModel)
         {
             if (!ModelState.IsValid || id != providerEditModel.Id)
+            {
                 return BadRequest(ModelState);
+            }
 
             var provider = await scvContext.Providers
                 .Where(p => p.Id == id)
@@ -144,6 +205,15 @@ namespace SCVBackend.Controllers
             return Ok(providerEditModel);
         }
 
+        /// <summary>
+        ///     Deletes a provider.
+        /// </summary>
+        /// <param name="id">
+        ///     The provider's id.
+        /// </param>
+        /// <returns></returns>
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {

@@ -8,6 +8,7 @@ using SCVBackend.Infrastructure;
 using EFSecondLevelCache.Core;
 using Microsoft.EntityFrameworkCore;
 using SCVBackend.Domain.Entities;
+using System.Collections.Generic;
 
 namespace SCVBackend.Controllers
 {
@@ -21,6 +22,18 @@ namespace SCVBackend.Controllers
             this.scvContext = scvContext;
         }
 
+        /// <summary>
+        ///     Gets the products available to sell.
+        /// </summary>
+        /// <param name="userId">
+        ///     The user's id when signed in.
+        /// </param>
+        /// <param name="brandId">
+        ///     The brand's id when filtering by brand.
+        /// </param>
+        /// <returns></returns>
+        [ProducesResponseType(200)]
+        [Produces(typeof(List<StoreListModel>))]
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] Guid? userId = null, [FromQuery] Guid? brandId = null)
         {
