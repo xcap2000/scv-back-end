@@ -29,6 +29,17 @@ namespace SCVBackend.Controllers
             this.providerService = providerService;
         }
 
+        /// <summary>
+        ///     Gets the cart of a specific user.
+        /// </summary>
+        /// <param name="userId">
+        ///     The id of the user to get the cart.
+        /// </param>
+        /// <returns>
+        ///     The user's cart.
+        /// </returns>
+        [ProducesResponseType(200)]
+        [Produces(typeof(CartModel))]
         [HttpGet("{userId}")]
         public async Task<IActionResult> Get(Guid userId)
         {
@@ -67,6 +78,17 @@ namespace SCVBackend.Controllers
             return Ok(cart);
         }
 
+        /// <summary>
+        ///     Adds a product to the user's cart.
+        /// </summary>
+        /// <param name="addToCartModel">
+        ///     Model representing the user's cart and product to be added.
+        /// </param>
+        /// <returns>
+        ///     A model representing a cart's item.
+        /// </returns>
+        [ProducesResponseType(200)]
+        [Produces(typeof(CartItemModel))]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AddToCartModel addToCartModel)
         {
@@ -110,6 +132,17 @@ namespace SCVBackend.Controllers
             return Ok(cartItemModel);
         }
 
+        /// <summary>
+        ///     Performs the checkout of an order.
+        /// </summary>
+        /// <param name="checkoutModel">
+        ///     Model representing the payment and delivery information.
+        /// </param>
+        /// <returns>
+        ///     Returns the generated order number.
+        /// </returns>
+        [ProducesResponseType(200)]
+        [Produces(typeof(long))]
         [HttpPost]
         [Route("checkout")]
         public async Task<IActionResult> Checkout([FromBody] CheckoutModel checkoutModel)
@@ -155,6 +188,18 @@ namespace SCVBackend.Controllers
             }
         }
 
+
+        /// <summary>
+        ///     Updates a product in the user's cart.
+        /// </summary>
+        /// <param name="updateCartItemModel">
+        ///     Model representing the user's cart item to be updated.
+        /// </param>
+        /// <returns>
+        ///     A boolean whether the process succeeded.
+        /// </returns>
+        [ProducesResponseType(200)]
+        [Produces(typeof(bool))]
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] UpdateCartItemModel updateCartItemModel)
         {
@@ -172,6 +217,17 @@ namespace SCVBackend.Controllers
             return Ok(true);
         }
 
+        /// <summary>
+        ///     Deletes an cart's item.
+        /// </summary>
+        /// <param name="cartItemId">
+        ///     The cart's item to be deleted.
+        /// </param>
+        /// <returns>
+        ///     A boolean whether the process succeeded.
+        /// </returns>
+        [ProducesResponseType(200)]
+        [Produces(typeof(bool))]
         [HttpDelete("{cartItemId}")]
         public async Task<IActionResult> Delete(Guid cartItemId)
         {

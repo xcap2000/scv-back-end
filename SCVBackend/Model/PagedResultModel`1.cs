@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SCVBackend.Model
 {
@@ -10,7 +11,11 @@ namespace SCVBackend.Model
             TotalCount = totalCount;
             Items = items;
         }
-        public long TotalCount { get; private set; }
-        public IEnumerable<T> Items { get; private set; }
+
+        [Required]
+        public long TotalCount { get; }
+
+        [Required]
+        public IEnumerable<T> Items { get; }
     }
 }

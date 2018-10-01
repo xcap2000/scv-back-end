@@ -5,6 +5,8 @@ namespace SCVBackend.Controllers
 {
     public class WellKnownController : Controller
     {
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
         [Route("/.well-known/acme-challenge/U_r0VPKasEwRQN_GQ2p9DTIIW89pJexz-9O5dGEOJq4")]
         public IActionResult Index()
         {

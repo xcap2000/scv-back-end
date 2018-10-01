@@ -1,10 +1,10 @@
 ﻿using EFSecondLevelCache.Core;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SCVBackend.Domain;
 using SCVBackend.Infrastructure;
 using SCVBackend.Model;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,10 +20,18 @@ namespace SCVBackend.Controllers
             this.scvContext = scvContext;
         }
 
+        /// <summary>
+        ///     Lists brands.
+        /// </summary>
+        /// <returns>
+        ///     A list of brands.
+        /// </returns>
+        [ProducesResponseType(200)]
+        [Produces(typeof(List<BrandListModel>))]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var products = await scvContext.Brands
+            var brands = await scvContext.Brands
                 .OrderBy(p => p.Name)
                 .Select
                 (
@@ -37,7 +45,7 @@ namespace SCVBackend.Controllers
                 .Cacheable()
                 .ToListAsync();
 
-            return Ok(products);
+            return Ok(brands);
         }
     }
 }

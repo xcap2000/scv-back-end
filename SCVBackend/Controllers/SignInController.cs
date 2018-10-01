@@ -30,6 +30,19 @@ namespace SCVBackend.Controllers
             this.configuration = configuration;
         }
 
+        /// <summary>
+        ///     Signs in the user in the system.
+        /// </summary>
+        /// <param name="signInModel">
+        ///     The model representing the user's credentials.
+        /// </param>
+        /// <returns>
+        ///     The model representing the authenticated user information.
+        /// </returns>
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        [Produces(typeof(SignInResponseModel))]
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> SignIn([FromBody] SignInModel signInModel)
