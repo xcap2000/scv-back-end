@@ -96,10 +96,10 @@ namespace SCVBackend
             }
             else
             {
-                app.UseHsts();
+                //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseCors(builder =>
                 builder.WithOrigins(configuration["CorsOrigins"])
                     .SetPreflightMaxAge(TimeSpan.FromHours(1D))
