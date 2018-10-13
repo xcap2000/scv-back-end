@@ -1,0 +1,79 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        // Restore
+        {
+            "label": "restore",
+            "command": "dotnet restore",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        // Build
+        {
+            "label": "build",
+            "command": "dotnet build",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        // Clean
+        {
+            "label": "clean",
+            "command": "dotnet clean",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        // Test Application
+        {
+            "label": "test application",
+            "command": "dotnet test SCVBackend.Tests.Unit/SCVBackend.Tests.Unit.csproj",
+            "type": "shell",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        // Run
+        {
+            "label": "run",
+            "command": "dotnet run --project SCVBackend/SCVBackend.csproj",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        // Exec
+        {
+            "label": "exec",
+            "command": "dotnet exec SCVBackend/bin/Debug/netcoreapp2.0/SCVFrontend.dll",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
