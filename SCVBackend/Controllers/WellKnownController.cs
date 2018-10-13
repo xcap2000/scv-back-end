@@ -7,10 +7,10 @@ namespace SCVBackend.Controllers
     {
         [HttpGet]
         [ApiExplorerSettings(IgnoreApi = true)]
-        [Route("/.well-known/acme-challenge/PmVBZYphnA9H2a5FtLidEKzxOlIvIx-tY7OOD_EQspg")]
+        [Route("/.well-known/acme-challenge/IVmQbDLRLb4TZJT_m0__xrY85YVW2ntW2qX1S7Jy61Y")]
         public IActionResult Index()
         {
-            return File(Encoding.UTF8.GetBytes("PmVBZYphnA9H2a5FtLidEKzxOlIvIx-tY7OOD_EQspg.fCta6qCK-oFf6d_ExTBGy0868GJ2a_r_H8IzWF4UNWk"), "text/plain");
+            return File(Encoding.UTF8.GetBytes("IVmQbDLRLb4TZJT_m0__xrY85YVW2ntW2qX1S7Jy61Y.fCta6qCK-oFf6d_ExTBGy0868GJ2a_r_H8IzWF4UNWk"), "text/plain");
         }
     }
 }
